@@ -14,45 +14,64 @@ import java.util.Collections;
  * HINT, you might want to subclass this more than once.
  * The group of cards has a maximum size attribute which is flexible for reuse.
  * @author dancye
+ * @modifier Vishwa
  */
-public class GroupOfCards 
-{
-   
-    //The group of cards, stored in an ArrayList
-    private ArrayList <Card> cards;
-    private int size;//the size of the grouping
-    
-    public GroupOfCards(int givenSize)
-    {
-        size = givenSize;
-    }
-    
-    /**
-     * A method that will get the group of cards as an ArrayList
-     * @return the group of cards.
-     */
-    public ArrayList<Card> showCards()
-    {
-        return cards;
-    }
-    
-    public void shuffle()
-    {
-        Collections.shuffle(cards);
+public class GroupOfCards {
+
+    private ArrayList<Card> card;
+
+    public GroupOfCards() {
+        card = new ArrayList<>();
+        String[] colors = {"RED", "BLUE", "GREEN", "YELLOW"};
+        int[] numbers = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 0}; 
+        int[] specialnumbers = {2, 2, 4, 4}; 
+
+        for (String c : colors) {
+            for (int i : numbers) {
+                card.add(new Card(i, c)); 
+            }
+        }
+
+        for (int i : specialnumbers) 
+        {
+            card.add(new Card(i));
+        }
+
     }
 
-    /**
-     * @return the size of the group of cards
-     */
-    public int getSize() {
-        return size;
+    public GroupOfCards(ArrayList<Card> c) {
+        card = c;
     }
 
-    /**
-     * @param givenSize the max size for the group of cards
-     */
-    public void setSize(int givenSize) {
-        size = givenSize;
+    public boolean isEmpty() {
+    return card.size() <= 0;
     }
-    
-}//end class
+
+    public void shuffle() {
+        Collections.shuffle(card);
+
+    }
+
+    public Card getTopCard() {
+        return card.remove(card.size() - 1);
+    }
+
+    public Card peek() {
+
+        return card.get(card.size() - 1);
+    }
+
+    @Override
+    public String toString() {
+
+        String deck = "";
+
+        for (Card c : this.card) {
+
+            deck = deck + c + " ";
+        }
+
+        return deck;
+
+    }
+}

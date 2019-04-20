@@ -7,43 +7,110 @@
 package ca.sheridancollege.project;
 
 /**
- * A class that models each Player in the game. Players have an identifier, which should be unique.
+ * A class that models each Player in the game. Players have an identifier,
+ * which should be unique.
+ *
  * @author dancye, 2018
+ * @modifier Vishwa
  */
-public abstract class Player 
-{
-    private String playerID; //the unique ID for this player
-    
-    /**
-     * A constructor that allows you to set the player's unique ID
-     * @param name the unique ID to assign to this player.
-     */
-    public Player(String name)
-    {
-        playerID= name;
-    }
-    
-    /**
-     * @return the playerID
-     */
-    public String getPlayerID() 
-    {
-        return playerID;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Player {
+
+    private final ArrayList<Card> playercards;
+    private final String name; 
+
+    public Player(String name) {
+        playercards = new ArrayList<>();
+        this.name = name;
+
     }
 
-    /**
-     * Ensure that the playerID is unique
-     * @param givenID the playerID to set
-     */
-    public void setPlayerID(String givenID) 
-    {
-        playerID = givenID;
+    public int numberOfCards() {
+        return playercards.size();
     }
-    
-    /**
-     * The method to be instantiated when you subclass the Player class
-     * with your specific type of Player and filled in with logic to play your game.
-     */
-    public abstract void play();
-    
+
+    public ArrayList<Card> PlayerCards() {
+        return playercards;
+    }
+
+    public void pickCards(Card c) {
+        playercards.add(c);
+
+    }
+
+    public Card throwCard(int c) {
+        return playercards.remove(c);
+    }
+
+    public void sayUno() {
+        Scanner s = new Scanner(System.in);
+
+        if (playercards.size() == 1) {
+
+            System.out.println("Uno");
+            System.out.println("Press Enter...");
+            s.nextLine();
+        }
+    }
+
+    public void showCards() {
+        String[] card = {" ***** ", "|      |", "|      |", " ***** "};
+        String c = "";
+
+        for (int i = 0; i < card.length; i++) {
+
+            for (int j = 0; j < playercards.size(); j++) 
+            {
+                if (!playercards.get(j).isSpecial()) {
+                    switch (i) {
+                        case 1:
+                            c = c + "| " + playercards.get(j).getColor() + " |" + " ";
+                            break;
+                        case 2:
+                            c = c + "|  " + playercards.get(j).getValue() + "  |" + " ";
+                            break;
+                        default:
+                            c = c + card[i] + " ";
+                            break;
+                    }
+                } else if (playercards.get(j).isSpecial()) {
+                    if (i == 1) {
+                        c = c + "| " + "+" + playercards.get(j).getValue() + "  |" + " ";
+                    } else {
+                        c = c + card[i] + " ";
+                    }
+                }
+            }
+            c += "\n";
+        }
+        System.out.print(c);
+    }
+
+    public void hideCards() 
+    {
+        String[] card = {" ***** ", "|      |", "|      |", " ***** "};
+        String c = "";
+
+        for (String card1 : card) {
+            for (Card playercard : playercards) {
+                c = c + card1 + " ";
+            }
+            c += "\n";
+        }
+
+        System.out.print(c);
+    }
+
+    public boolean hasWon() 
+    {
+        return playercards.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 }
